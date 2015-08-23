@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>org.camunda.bpm.extension.jetty</groupId>
+    <artifactId>camunda-bpm-jetty-qa</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
+  </parent>
+
+  <artifactId>camunda-bpm-qa-jetty-runtime</artifactId>
+
+  <dependencies>
+    <dependency>
+      <!--
+        Make sure it comes after assembly in the build.
+        Leave scope test, otherwise libs from pom will be copied into Jetty's lib folder
+      -->
+      <groupId>org.camunda.bpm.extension.jetty</groupId>
+      <artifactId>camunda-jetty-assembly</artifactId>
+      <version>${project.version}</version>
+      <type>pom</type>
+      <scope>test</scope>
+    </dependency>
+
+    <!--
+      database drivers
+      we deploy all and only activate one through server.xml
+    -->
+    <!--<dependency>-->
+      <!--<groupId>org.mariadb.jdbc</groupId>-->
+      <!--<artifactId>mariadb-java-client</artifactId>-->
+      <!--<scope>runtime</scope>-->
+    <!--</dependency>-->
+    <!--<dependency>-->
+      <!--<groupId>mysql</groupId>-->
+      <!--<artifactId>mysql-connector-java</artifactId>-->
+      <!--<scope>runtime</scope>-->
+    <!--</dependency>-->
+    <!--<dependency>-->
+      <!--<groupId>com.ibm.db2.jcc</groupId>-->
+      <!--<artifactId>db2jcc4</artifactId>-->
+      <!--<scope>runtime</scope>-->
+    <!--</dependency>-->
+    <!--<dependency>-->
+      <!--<groupId>com.microsoft.sqlserver</groupId>-->
+      <!--<artifactId>sqljdbc4</artifactId>-->
+      <!--<scope>runtime</scope>-->
+    <!--</dependency>-->
+    <!--<dependency>-->
+      <!--<groupId>org.postgresql</groupId>-->
+      <!--<artifactId>postgresql</artifactId>-->
+      <!--<scope>runtime</scope>-->
+    <!--</dependency>-->
+
+    <!--<dependency>-->
+      <!--<groupId>org.python</groupId>-->
+      <!--<artifactId>jython</artifactId>-->
+      <!--<scope>runtime</scope>-->
+    <!--</dependency>-->
+    <!--<dependency>-->
+      <!--<groupId>org.jruby</groupId>-->
+      <!--<artifactId>jruby-complete</artifactId>-->
+      <!--<scope>runtime</scope>-->
+    <!--</dependency>-->
+
+  </dependencies>
+
+  <profiles>
+    <profile>
+      <id>jetty</id>
+      <build>
+        <resources>
+          <resource>
+            <directory>src/main</directory>
+            <filtering>true</filtering>
+          </resource>
+        </resources>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-dependency-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>unpack-server</id>
+                <phase>generate-resources</phase>
+                <goals>
+                  <goal>unpack</goal>
+                </goals>
+                <inherited>false</inherited>
+                <configuration>
+                  <artifactItems>
+                    <artifactItem>
+                      <groupId>org.camunda.bpm.extension.jetty</groupId>
+                      <artifactId>camunda-jetty-assembly</artifactId>
+                      <version>${project.version}</version>
+                      <type>tar.gz</type>
+                      <overWrite>true</overWrite>
+                      <outputDirectory>target/</outputDirectory>
+                    </artifactItem>
+                  </artifactItems>
+                </configuration>
+              </execution>
+              <execution>
+                <id>copy-libs</id>
+                <phase>generate-resources</phase>
+                <goals>
+                  <goal>copy-dependencies</goal>
+                </goals>
+                <inherited>false</inherited>
+                <configuration>
+                  <includeScope>runtime</includeScope>
+                  <outputDirectory>target/server/jetty-distribution-${version.jetty}/camunda-base/lib/ext</outputDirectory>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+          <!-- copy filtered configuration resources -->
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-resources-plugin</artifactId>
+            <configuration>
+              <delimiters>
+                <delimiter>${*}</delimiter>
+              </delimiters>
+              <useDefaultDelimiters>false</useDefaultDelimiters>
+            </configuration>
+            <executions>
+              <execution>
+                <id>copy-resources</id>
+                <phase>generate-test-resources</phase>
+                <goals>
+                  <goal>resources</goal>
+                </goals>
+                <configuration>
+                  <overwrite>true</overwrite>
+                  <outputDirectory>target/server/jetty-distribution-${version.jetty}</outputDirectory>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
+
+</project>

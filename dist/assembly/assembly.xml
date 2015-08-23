@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<assembly xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="urn:maven:assembly:1.1.0-SNAPSHOT">
+
+  <id>assemble</id>
+
+  <formats>
+    <format>tar.gz</format>
+  </formats>
+
+  <includeBaseDirectory>false</includeBaseDirectory>
+
+  <fileSets>
+    <fileSet>
+      <directory>${project.build.directory}/distribution/jetty-distribution-${version.jetty}</directory>
+      <outputDirectory>server/jetty-distribution-${version.jetty}/</outputDirectory>
+      <includes>
+        <include>**/*</include>
+      </includes>
+    </fileSet>
+  </fileSets>
+
+  <dependencySets>
+    <dependencySet>
+      <outputDirectory>server/jetty-distribution-${version.jetty}/camunda-base/lib/ext</outputDirectory>
+      <includes>
+        <include>com.h2database:h2:jar</include>
+        <!--<include>javax.mail:mail:jar</include>-->
+      </includes>
+    </dependencySet>
+    <dependencySet>
+      <outputDirectory>server/jetty-distribution-${version.jetty}/lib/camunda</outputDirectory>
+      <includes>
+        <include>org.camunda.bpm:camunda-engine:jar</include>
+        <include>org.camunda.bpm.identity:camunda-identity-ldap:jar</include>
+
+        <include>org.mybatis:mybatis:jar:*</include>
+        <include>com.fasterxml.uuid:java-uuid-generator:jar:*</include>
+        <include>joda-time:joda-time:jar:*</include>
+        <include>org.codehaus.groovy:groovy-all:jar:*</include>
+        <include>org.slf4j:*:jar</include>
+
+        <include>org.camunda.bpm:camunda-engine-plugin-*:jar</include>
+        <include>org.camunda.spin:*:jar</include>
+        <include>org.camunda.connect:*:jar</include>
+        <include>org.camunda.commons:*:jar</include>
+
+        <include>org.camunda.bpm.model:*:jar</include>
+        <include>org.camunda.bpm.dmn:*:jar</include>
+
+        <include>org.freemarker:*:jar</include>
+        <include>org.camunda.template-engines:*:jar</include>
+      </includes>
+    </dependencySet>
+
+    <dependencySet>
+      <outputDirectory>lib/</outputDirectory>
+      <includes>
+        <include>com.h2database:h2:jar</include>
+        <include>javax.mail:mail:jar</include>
+
+        <include>org.camunda.bpm:camunda-engine:jar</include>
+        <include>org.camunda.bpm.identity:camunda-identity-ldap:jar</include>
+
+        <include>org.mybatis:mybatis:jar:*</include>
+        <include>com.fasterxml.uuid:java-uuid-generator:jar:*</include>
+        <include>joda-time:joda-time:jar:*</include>
+        <include>org.codehaus.groovy:groovy-all:jar:*</include>
+        <include>org.slf4j:*:jar</include>
+
+        <include>org.camunda.bpm:camunda-engine-plugin-*:jar</include>
+        <include>org.camunda.spin:*:jar</include>
+        <include>org.camunda.connect:*:jar</include>
+        <include>org.camunda.commons:*:jar</include>
+
+        <include>org.camunda.bpm.model:*:jar</include>
+
+        <include>org.camunda.bpm.dmn:*:jar</include>
+
+        <include>org.freemarker:*:jar</include>
+        <include>org.camunda.template-engines:*:jar</include>
+      </includes>
+    </dependencySet>
+  </dependencySets>
+
+  <files>
+    <file>
+      <source>src/README.txt</source>
+      <filtered>true</filtered>
+      <lineEnding>crlf</lineEnding>
+      <outputDirectory></outputDirectory>
+    </file>
+    <file>
+      <source>src/LICENSE-2.0.txt</source>
+      <filtered>true</filtered>
+      <lineEnding>crlf</lineEnding>
+      <outputDirectory></outputDirectory>
+    </file>
+    <file>
+      <source>src/start-camunda.bat</source>
+      <filtered>true</filtered>
+      <outputDirectory></outputDirectory>
+    </file>
+    <file>
+      <source>src/start-camunda.sh</source>
+      <filtered>true</filtered>
+      <outputDirectory></outputDirectory>
+      <fileMode>0755</fileMode>
+    </file>
+
+    <file>
+      <source>src/etc/bpm-platform.xml</source>
+      <outputDirectory>server/jetty-distribution-${version.jetty}/etc/</outputDirectory>
+    </file>
+
+    <!--<file>-->
+      <!--<source>src/tomcat6/setenv.bat</source>-->
+      <!--<outputDirectory>server/apache-tomcat-${version.tomcat}/bin/</outputDirectory>-->
+    <!--</file>-->
+    <!--<file>-->
+      <!--<source>src/tomcat6/setenv.sh</source>-->
+      <!--<outputDirectory>server/apache-tomcat-${version.tomcat}/bin/</outputDirectory>-->
+    <!--</file>-->
+  </files>
+</assembly>

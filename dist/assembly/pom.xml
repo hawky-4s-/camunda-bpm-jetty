@@ -1,0 +1,271 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>org.camunda.bpm.extension.jetty</groupId>
+    <artifactId>camunda-jetty</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
+  </parent>
+
+  <artifactId>camunda-jetty-assembly</artifactId>
+  <packaging>pom</packaging>
+
+  <properties>
+    <distribution-directory>${project.build.directory}/distribution</distribution-directory>
+    <jetty-directory>${distribution-directory}/jetty-distribution-${version.jetty}</jetty-directory>
+    <assembly-directory>${distribution-directory}/jetty-distribution-${version.jetty}</assembly-directory>
+  </properties>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.eclipse.jetty</groupId>
+      <artifactId>jetty-distribution</artifactId>
+      <version>${version.jetty}</version>
+      <type>tar.gz</type>
+      <exclusions>
+        <exclusion>
+          <groupId>org.eclipse.jetty</groupId>
+          <artifactId>test-jetty-webapp</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>org.eclipse.jetty</groupId>
+          <artifactId>test-proxy-webapp</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>org.glassfish</groupId>
+          <artifactId>javax.el</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+
+    <dependency>
+      <groupId>org.camunda.bpm.extension.jetty</groupId>
+      <artifactId>camunda-bpm-jetty-core</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.camunda.bpm.extension.jetty</groupId>
+      <artifactId>camunda-bpm-jetty-core</artifactId>
+      <version>${project.version}</version>
+      <classifier>config</classifier>
+    </dependency>
+
+    <!--<dependency>-->
+      <!--<groupId>org.apache.tomcat</groupId>-->
+      <!--<artifactId>tomcat-jdbc</artifactId>-->
+      <!--<version>${version.tomcat}</version>-->
+    <!--</dependency>-->
+
+    <dependency>
+      <groupId>com.h2database</groupId>
+      <artifactId>h2</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>javax.mail</groupId>
+      <artifactId>mail</artifactId>
+      <version>1.4.1</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.mybatis</groupId>
+      <artifactId>mybatis</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>com.fasterxml.uuid</groupId>
+      <artifactId>java-uuid-generator</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.codehaus.groovy</groupId>
+      <artifactId>groovy-all</artifactId>
+      <version>${version.groovy}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.camunda.bpm</groupId>
+      <artifactId>camunda-engine</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.camunda.bpm</groupId>
+      <artifactId>camunda-engine-cdi</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.camunda.bpm</groupId>
+      <artifactId>camunda-engine-spring</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.camunda.bpm.identity</groupId>
+      <artifactId>camunda-identity-ldap</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.camunda.spin</groupId>
+      <artifactId>camunda-spin-core</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.camunda.bpm</groupId>
+      <artifactId>camunda-engine-plugin-spin</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.camunda.spin</groupId>
+      <artifactId>camunda-spin-dataformat-all</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.camunda.connect</groupId>
+      <artifactId>camunda-connect-core</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.camunda.bpm</groupId>
+      <artifactId>camunda-engine-plugin-connect</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.camunda.connect</groupId>
+      <artifactId>camunda-connect-connectors-all</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.camunda.bpm</groupId>
+      <artifactId>camunda-engine-rest</artifactId>
+      <classifier>classes</classifier>
+    </dependency>
+
+    <dependency>
+      <groupId>org.freemarker</groupId>
+      <artifactId>freemarker</artifactId>
+      <version>2.3.20</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.camunda.template-engines</groupId>
+      <artifactId>camunda-template-engines-freemarker</artifactId>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-dependency-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>unpack-jetty-distribution-base</id>
+            <goals>
+              <goal>unpack</goal>
+            </goals>
+            <configuration>
+              <artifactItems>
+                <artifactItem>
+                  <groupId>org.eclipse.jetty</groupId>
+                  <artifactId>jetty-distribution</artifactId>
+                  <version>${version.jetty}</version>
+                  <type>tar.gz</type>
+                </artifactItem>
+              </artifactItems>
+              <outputDirectory>${distribution-directory}</outputDirectory>
+            </configuration>
+          </execution>
+          <execution>
+            <id>unpack-camunda-jetty-core-config</id>
+            <goals>
+              <goal>unpack</goal>
+            </goals>
+            <configuration>
+              <artifactItems>
+                <artifactItem>
+                  <groupId>org.camunda.bpm.extension.jetty</groupId>
+                  <artifactId>camunda-bpm-jetty-core</artifactId>
+                  <version>${project.version}</version>
+                  <classifier>config</classifier>
+                </artifactItem>
+              </artifactItems>
+              <outputDirectory>${jetty-directory}</outputDirectory>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-resources-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>create-camunda-base-dir</id>
+            <phase>process-classes</phase>
+            <goals>
+              <goal>copy-resources</goal>
+            </goals>
+            <configuration>
+              <outputDirectory>${jetty-directory}/camunda-base</outputDirectory>
+              <resources>
+                <resource>
+                  <directory>${jetty-directory}/demo-base</directory>
+                </resource>
+              </resources>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>exec-maven-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>setup camunda-base</id>
+            <phase>process-classes</phase>
+            <configuration>
+              <mainClass>org.eclipse.jetty.start.Main</mainClass>
+              <arguments>
+                <argument>jetty.home=${jetty-directory}</argument>
+                <argument>jetty.base=${jetty-directory}/camunda-base</argument>
+                <!-- skip y/n check when installing custom module -->
+                <argument>--approve-all-licenses</argument>
+                <argument>--add-to-start=camunda</argument>
+              </arguments>
+            </configuration>
+            <goals>
+              <goal>java</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-assembly-plugin</artifactId>
+        <version>2.5.2</version>
+        <executions>
+          <execution>
+            <id>assemble</id>
+            <phase>package</phase>
+            <goals>
+              <goal>single</goal>
+            </goals>
+            <configuration>
+              <descriptors>
+                <descriptor>assembly.xml</descriptor>
+              </descriptors>
+              <attach>true</attach>
+              <appendAssemblyId>false</appendAssemblyId>
+              <outputDirectory>target/</outputDirectory>
+              <workDirectory>target/assembly/work</workDirectory>
+              <tarLongFileMode>gnu</tarLongFileMode>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+
+</project>

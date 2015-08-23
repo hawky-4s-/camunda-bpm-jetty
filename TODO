@@ -1,0 +1,17 @@
+create assembly
+create distro
+create qa runtime
+create qa it engine
+create qa it webapps
+
+arquillian? -> managed or remote? what about embedded?
+
+
+
+Nexus Staging repository Plugin:
+
+<dependency>
+    <groupId>org.sonatype.nexus</groupId>
+    <artifactId>nexus-client-core</artifactId>
+    <version>2.11.4-01</version>
+</dependency>

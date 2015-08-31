@@ -28,14 +28,8 @@ public class JettyParseBpmPlatformXmlStep extends AbstractParseBpmPlatformXmlSte
     return fileLocation;
   }
 
-  public URL lookupBpmPlatformXmlFromJettyDirectory() {
-    String jettyDir = System.getProperty(JETTY_BASE);
-
-    if (jettyDir == null) {
-      jettyDir = System.getProperty(JETTY_HOME);
-    }
-
-    String bpmPlatformFileLocation = jettyDir + File.separator + "conf" + File.separator + BPM_PLATFORM_XML_FILE;
+  public URL lookupBpmPlatformXmlFromJettyDirectory(String directory) {
+    String bpmPlatformFileLocation = directory + File.separator + "etc" + File.separator + BPM_PLATFORM_XML_FILE;
 
     try {
       URL fileLocation = checkValidFileLocation(bpmPlatformFileLocation);
@@ -47,6 +41,17 @@ public class JettyParseBpmPlatformXmlStep extends AbstractParseBpmPlatformXmlSte
       return fileLocation;
     } catch (MalformedURLException e) {
       throw new ProcessEngineException("'" + bpmPlatformFileLocation + "' is not a valid Camunda BPM platform configuration resource location.", e);
+    }
+  }
+
+  public URL lookupBpmPlatformXmlFromJettyDirectory() {
+    String jettyDir = System.getProperty(JETTY_BASE);
+
+    if (jettyDir != null) {
+      return lookupBpmPlatformXmlFromJettyDirectory(jettyDir);
+    } else {
+      jettyDir = System.getProperty(JETTY_HOME);
+      return lookupBpmPlatformXmlFromJettyDirectory(jettyDir);
     }
   }
 

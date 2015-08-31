@@ -17,7 +17,7 @@
     <cargo.timeout>180000</cargo.timeout>
     <version.chromedriver>2.14</version.chromedriver>
     <version.selenium>2.45.0</version.selenium>
-    <http.port>9090</http.port>
+    <http.port>8080</http.port>
   </properties>
 
   <dependencies>
@@ -188,12 +188,12 @@
                 <type>installed</type>
                 <containerId>jetty9x</containerId>
                 <append>false</append>
-                <home>${project.basedir}/${jetty.runtime}</home>
+                <home>${project.basedir}/${jetty.runtime.location}</home>
                 <timeout>${cargo.timeout}</timeout>
               </container>
               <configuration>
                 <type>existing</type>
-                <home>${project.build.directory}/${jetty.runtime}/camunda-base</home>
+                <home>${project.basedir}/${jetty.runtime.location}/camunda-base</home>
 
                 <properties>
                   <cargo.jvmargs>-XX:PermSize=192m -XX:MaxPermSize=192m</cargo.jvmargs>
@@ -213,7 +213,7 @@
                 </deployable>
                 <deployable>
                   <groupId>org.camunda.bpm.webapp</groupId>
-                  <artifactId>camunda-webapp-ee-tomcat</artifactId>
+                  <artifactId>camunda-webapp-tomcat</artifactId>
                   <type>war</type>
                   <pingURL>http://localhost:${http.port}/camunda</pingURL>
                   <pingTimeout>${cargo.timeout}</pingTimeout>
@@ -503,7 +503,7 @@
                 <artifactItem>
                   <groupId>org.camunda.bpm.qa</groupId>
                   <artifactId>camunda-qa-integration-tests-webapps</artifactId>
-                  <version>${project.version}</version>
+                  <version>${version.camunda}</version>
                   <type>test-jar</type>
                   <overWrite>true</overWrite>
                   <outputDirectory>${project.build.testOutputDirectory}</outputDirectory>

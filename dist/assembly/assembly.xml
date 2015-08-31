@@ -18,6 +18,10 @@
         <include>**/*</include>
       </includes>
     </fileSet>
+    <fileSet>
+      <directory>src/etc</directory>
+      <outputDirectory>server/jetty-distribution-${version.jetty}/camunda-base/etc/</outputDirectory>
+    </fileSet>
   </fileSets>
 
   <dependencySets>
@@ -31,6 +35,7 @@
     <dependencySet>
       <outputDirectory>server/jetty-distribution-${version.jetty}/lib/camunda</outputDirectory>
       <includes>
+        <include>org.camunda.bpm.extension.jetty:camunda-bpm-jetty-core:jar</include>
         <include>org.camunda.bpm:camunda-engine:jar</include>
         <include>org.camunda.bpm.identity:camunda-identity-ldap:jar</include>
 
